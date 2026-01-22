@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { OrderSummaryComponent } from './order-summary/order-summary.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -35,4 +36,14 @@ import { OrderSummaryComponent } from './order-summary/order-summary.component';
 })
 export class CartComponent {
   cartService = inject(CartService);
+
+  private router = inject(Router);
+
+  constructor() {
+    effect(() => {
+      if (this.cartService.cart().length === 0) {
+        this.router.navigate(['/']);
+      }
+    });
+  }
 }
